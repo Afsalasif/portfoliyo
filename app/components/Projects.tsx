@@ -3,7 +3,7 @@ import React from 'react'
 import { motion } from 'framer-motion';
 
 import { HeroParallax } from './ui/HeroParallax'
-import { section } from 'framer-motion/client';
+// import { section } from 'framer-motion/client';
 
 
 const Projects = () => {

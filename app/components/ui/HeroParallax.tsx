@@ -9,7 +9,7 @@ import {
 } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { StarsBackground } from "./StarsBackground";
+// import { StarsBackground } from "./StarsBackground";
 
 export const HeroParallax = ({
   products,

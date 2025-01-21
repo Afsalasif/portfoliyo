@@ -1,5 +1,5 @@
 import React from 'react'
-import { BackgroundGradientAnimation } from './ui/BackgroundGradientAnimation';
+// import { BackgroundGradientAnimation } from './ui/BackgroundGradientAnimation';
 import { StarsBackground } from './ui/StarsBackground';
 import { ShootingStars } from './ui/ShootingStars';
 import { FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";

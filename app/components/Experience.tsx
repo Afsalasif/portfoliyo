@@ -75,7 +75,7 @@ const Experience: React.FC = () => {
             JWT) to secure applications while providing a seamless user login
             experience. Led the effort to improve application performance by
             identifying bottlenecks, reducing load times, and optimizing API
-            calls for efficiency. Proactively contributed to the team's growth
+            calls for efficiency. Proactively contributed to the team&apos;s growth
             by mentoring junior developers and sharing knowledge on React best
             practices and advanced concepts. Built and deployed production-ready
             applications with CI/CD pipelines, ensuring faster delivery cycles

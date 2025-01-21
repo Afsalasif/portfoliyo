@@ -1,7 +1,7 @@
-import Image from "next/image";
+// import Image from "next/image";
 import Landing from "./components/Landing";
 import Experience from "./components/Experience";
-import Layout from "./components/Layout";
+// import Layout from "./components/Layout";
 import Projects from "./components/Projects";
 import { StarsBackground } from "./components/ui/StarsBackground";
 import Aboutme from "./components/Aboutme";

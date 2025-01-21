@@ -1,12 +1,12 @@
-import Image from "next/image";
+// import Image from "next/image";
 import React from "react";
-import { ContainerScroll } from "./ui/ContainerScroll";
-import { StarsBackground } from "./ui/StarsBackground";
-import {
-  TextRevealCard,
-  TextRevealCardDescription,
-  TextRevealCardTitle,
-} from "./ui/TextRevealCard";
+// import { ContainerScroll } from "./ui/ContainerScroll";
+// import { StarsBackground } from "./ui/StarsBackground";
+// import {
+//   TextRevealCard,
+//   TextRevealCardDescription,
+//   TextRevealCardTitle,
+// } from "./ui/TextRevealCard";
 import { FaGithub, FaReact, FaNodeJs, FaJava, FaGitAlt, FaPython } from "react-icons/fa";
 import { DiJavascript1,DiMongodb } from "react-icons/di";
 import { SiNextdotjs } from "react-icons/si";
