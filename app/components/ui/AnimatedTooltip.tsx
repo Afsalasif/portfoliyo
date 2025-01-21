@@ -18,7 +18,7 @@ export const AnimatedTooltip = ({
     id: number;
     name: string;
   
-    icon:any;
+    icon: React.JSX.Element; 
   }[];
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -29,7 +29,7 @@ export const AnimatedTooltip = ({
     useTransform(x, [-100, 100], [-45, 45]),
     springConfig
   );
-  const convertIconToDataURL = (icon:any): string => {
+  const convertIconToDataURL = (icon:React.JSX.Element): string => {
     const svgString = encodeURIComponent(renderToStaticMarkup(icon));
     return `data:image/svg+xml,${svgString}`;
   };
@@ -38,8 +38,8 @@ export const AnimatedTooltip = ({
     useTransform(x, [-100, 100], [-50, 50]),
     springConfig
   );
-  const handleMouseMove = (event: any) => {
-    const halfWidth = event.target.offsetWidth / 2;
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const halfWidth = event.currentTarget.offsetWidth / 2;
     x.set(event.nativeEvent.offsetX - halfWidth); // set the x value, which is then used in transform and rotate
   };
 

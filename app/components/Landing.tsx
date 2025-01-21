@@ -6,26 +6,26 @@ import { FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
 
 
 function Landing() {
-  const socialLinks = [
-    {
-      id: 1,
-      icon: <FaLinkedin />,
-      name: "LinkedIn",
-      url: "https://www.linkedin.com/in/your-profile/",  // Replace with your LinkedIn URL
-    },
-    {
-      id: 2,
-      icon: <FaGithub />,
-      name: "GitHub",
-      url: "https://github.com/your-profile",  // Replace with your GitHub URL
-    },
-    {
-      id: 3,
-      icon: <FaEnvelope />,
-      name: "Email",
-      url: "mailto:youremail@example.com",  // Replace with your email
-    },
-  ];
+  // const socialLinks = [
+  //   {
+  //     id: 1,
+  //     icon: <FaLinkedin />,
+  //     name: "LinkedIn",
+  //     url: "https://www.linkedin.com/in/your-profile/",  // Replace with your LinkedIn URL
+  //   },
+  //   {
+  //     id: 2,
+  //     icon: <FaGithub />,
+  //     name: "GitHub",
+  //     url: "https://github.com/your-profile",  // Replace with your GitHub URL
+  //   },
+  //   {
+  //     id: 3,
+  //     icon: <FaEnvelope />,
+  //     name: "Email",
+  //     url: "mailto:youremail@example.com",  // Replace with your email
+  //   },
+  // ];
   
     return (
       <div>
