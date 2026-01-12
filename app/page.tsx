@@ -1,23 +1,21 @@
-// import Image from "next/image";
 import Landing from "./components/Landing";
 import Experience from "./components/Experience";
-// import Layout from "./components/Layout";
 import Projects from "./components/Projects";
-import { StarsBackground } from "./components/ui/StarsBackground";
 import Aboutme from "./components/Aboutme";
 import Connect from "./components/Connect";
+import SystemAnalysis from "./components/SystemAnalysis";
+// import CreativeGallery from "./components/CreativeGallery";
 
 export default function Home() {
   return (
     <div>
- <Landing />
- <Aboutme />
- <Projects />
- <Experience />
- <Connect />
- <StarsBackground />
+      <Landing />
+      <Aboutme />
+      <Projects />
+      <SystemAnalysis />
+      {/* <CreativeGallery /> */}
+      <Experience />
+      <Connect />
     </div>
-    
-  
   );
 }
