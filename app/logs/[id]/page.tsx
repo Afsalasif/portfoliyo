@@ -9,8 +9,9 @@ export function generateStaticParams() {
     }));
 }
 
-export default function LogDetail({ params }: { params: { id: string } }) {
-    const log = analysisData.find((item) => item.id === params.id);
+export default async function LogDetail({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
+    const log = analysisData.find((item) => item.id === id);
 
     if (!log) {
         notFound();
@@ -65,8 +66,8 @@ export default function LogDetail({ params }: { params: { id: string } }) {
                             case 'header':
                                 return (
                                     <h3 key={index} className={`font-doto font-bold text-white mb-4 mt-8 ${block.level === 2 ? 'text-2xl' :
-                                            block.level === 3 ? 'text-xl' :
-                                                'text-lg'
+                                        block.level === 3 ? 'text-xl' :
+                                            'text-lg'
                                         }`}>
                                         {block.text}
                                     </h3>
