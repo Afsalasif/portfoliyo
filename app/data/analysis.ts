@@ -1,8 +1,9 @@
-export type ContentBlock =
-    | { type: 'header'; level: 2 | 3; text: string }
+﻿export type ContentBlock =
+    | { type: 'header'; level: 2 | 3 | 4; text: string }
     | { type: 'paragraph'; text: string }
     | { type: 'list'; items: string[] }
-    | { type: 'code'; language: string; code: string; caption?: string };
+    | { type: 'code'; language: string; code: string; caption?: string }
+    | { type: 'table'; headers: string[]; rows: string[][] };
 
 export interface AnalysisCase {
     id: string;
@@ -167,95 +168,95 @@ return (
         status: "DECLASSIFIED",
         contentBlocks: [
             {
-                "type": "header",
-                "level": 3,
-                "text": "1. Critical Rendering Path Optimization"
+                type: "header",
+                level: 3,
+                text: "1. Critical Rendering Path Optimization"
             },
             {
-                "type": "header",
-                "level": 3,
-                "text": "1.1 Animation Decoupling from LCP"
+                type: "header",
+                level: 3,
+                text: "1.1 Animation Decoupling from LCP"
             },
             {
-                "type": "paragraph",
-                "text": "Location: HeroLux.tsx"
+                type: "paragraph",
+                text: "Location: HeroLux.tsx"
             },
             {
-                "type": "paragraph",
-                "text": "The Breakthrough Insight: Animations don't need to block the Largest Contentful Paint. The LCP element (hero image + title) renders immediately while animations overlay on top using z-index layering."
+                type: "paragraph",
+                text: "The Breakthrough Insight: Animations don't need to block the Largest Contentful Paint. The LCP element (hero image + title) renders immediately while animations overlay on top using z-index layering."
             },
             {
-                "type": "paragraph",
-                "text": "Implementation Pattern:"
+                type: "paragraph",
+                text: "Implementation Pattern:"
             },
             {
-                "type": "code",
-                "language": "tsx",
-                "caption": "BEFORE: Animation blocks rendering",
-                "code": "<MotionDiv initial={{ opacity: 0 }} animate={{ opacity: 1 }}>\n  <img src=\"/hero1.webp\" alt=\"Hero\" />\n  <h1>Luxury Real Estate</h1>\n</MotionDiv>"
+                type: "code",
+                language: "tsx",
+                caption: "BEFORE: Animation blocks rendering",
+                code: "<MotionDiv initial={{ opacity: 0 }} animate={{ opacity: 1 }}>\n  <img src=\"/hero1.webp\" alt=\"Hero\" />\n  <h1>Luxury Real Estate</h1>\n</MotionDiv>"
             },
             {
-                "type": "code",
-                "language": "tsx",
-                "caption": "AFTER: Immediate render, animations overlay",
-                "code": "// Layer 1 (z-10): Background image - RENDERS IMMEDIATELY\n<MotionDiv initial={{ opacity: 1, scale: 1 }} className=\"absolute inset-0\">\n  <img src={heroImages[currentImageIndex].src} alt=\"...\" />\n</MotionDiv>\n\n// Layer 2 (z-20): Content - RENDERS IMMEDIATELY\n<div className=\"absolute inset-0 z-20\">\n  <h1>Luxury Real Estate</h1>\n</div>\n\n// Layer 3 (z-30): Curtain animation - OVERLAYS without blocking\n<MotionDiv className=\"absolute inset-0 z-30\" initial={{ scaleY: 1 }} />"
+                type: "code",
+                language: "tsx",
+                caption: "AFTER: Immediate render, animations overlay",
+                code: "// Layer 1 (z-10): Background image - RENDERS IMMEDIATELY\n<MotionDiv initial={{ opacity: 1, scale: 1 }} className=\"absolute inset-0\">\n  <img src={heroImages[currentImageIndex].src} alt=\"...\" />\n</MotionDiv>\n\n// Layer 2 (z-20): Content - RENDERS IMMEDIATELY\n<div className=\"absolute inset-0 z-20\">\n  <h1>Luxury Real Estate</h1>\n</div>\n\n// Layer 3 (z-30): Curtain animation - OVERLAYS without blocking\n<MotionDiv className=\"absolute inset-0 z-30\" initial={{ scaleY: 1 }} />"
             },
             {
-                "type": "paragraph",
-                "text": "Key Techniques:"
+                type: "paragraph",
+                text: "Key Techniques:"
             },
             {
-                "type": "list",
-                "items": [
+                type: "list",
+                items: [
                     "Immediate Initial State: initial={{ opacity: 1, scale: 1 }} instead of opacity: 0",
                     "Z-Index Layering: Content at z-20, animations at z-30",
                     "SSR Skeleton: Loading state renders actual image immediately"
                 ]
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "SSR Skeleton Implementation"
+                type: "header",
+                level: 3,
+                text: "SSR Skeleton Implementation"
             },
             {
-                "type": "code",
-                "language": "tsx",
-                "caption": "Prevents layout shift during hydration (Lines 163-178)",
-                "code": "if (!state.isMounted) {\n  return (\n    <section className=\"relative w-full h-screen overflow-hidden bg-[#1a1a1a]\">\n      <img\n        src={heroImages[0]?.src || \"/hero1.webp\"}\n        alt={t(\"accessibility.heroImageAlt\")}\n        className=\"object-cover w-full h-full\"\n      />\n    </section>\n  );\n}"
+                type: "code",
+                language: "tsx",
+                caption: "Prevents layout shift during hydration (Lines 163-178)",
+                code: "if (!state.isMounted) {\n  return (\n    <section className=\"relative w-full h-screen overflow-hidden bg-[#1a1a1a]\">\n      <img\n        src={heroImages[0]?.src || \"/hero1.webp\"}\n        alt={t(\"accessibility.heroImageAlt\")}\n        className=\"object-cover w-full h-full\"\n      />\n    </section>\n  );\n}"
             },
             {
-                "type": "paragraph",
-                "text": "Impact: LCP reduced from 2.5s to 0.9s (64% improvement)"
+                type: "paragraph",
+                text: "Impact: LCP reduced from 2.5s to 0.9s (64% improvement)"
             },
             {
-                "type": "header",
-                "level": 3,
-                "text": "2. Webpack Bundle Splitting Strategy"
+                type: "header",
+                level: 3,
+                text: "2. Webpack Bundle Splitting Strategy"
             },
             {
-                "type": "paragraph",
-                "text": "Location: next.config.ts"
+                type: "paragraph",
+                text: "Location: next.config.ts"
             },
             {
-                "type": "header",
-                "level": 3,
-                "text": "2.1 Four-Tier Cache Group Architecture"
+                type: "header",
+                level: 3,
+                text: "2.1 Four-Tier Cache Group Architecture"
             },
             {
-                "type": "code",
-                "language": "javascript",
-                "caption": "Bundle splitting configuration",
-                "code": "splitChunks: {\n  chunks: 'all',\n  cacheGroups: {\n    // Tier 1: Framework (Priority 40) - Changes rarely\n    framework: {\n      name: 'framework',\n      test: /[\\\\/]node_modules[\\\\/](react|react-dom|scheduler|prop-types)[\\\\/]/,\n      priority: 40,\n      enforce: true,\n    },\n    \n    // Tier 2: Large Libraries (Priority 30) - Size-based splitting\n    lib: {\n      test: (module) => module.size() > 160000 && /node_modules/.test(module.identifier()),\n      name: (module) => crypto.createHash('sha1').update(module.identifier()).digest('hex').substring(0, 8),\n      priority: 30,\n      minChunks: 1,\n      reuseExistingChunk: true,\n    },\n    \n    // Tier 3: Commons (Priority 20) - Shared code\n    commons: {\n      name: 'commons',\n      minChunks: 2,\n      priority: 20,\n    },\n    \n    // Tier 4: Vendor (Priority 10) - All other node_modules\n    vendor: {\n      test: /[\\\\/]node_modules[\\\\/]/,\n      name: 'vendor',\n      priority: 10,\n      enforce: true,\n      reuseExistingChunk: true,\n    },\n  },\n}"
+                type: "code",
+                language: "javascript",
+                caption: "Bundle splitting configuration",
+                code: "splitChunks: {\n  chunks: 'all',\n  cacheGroups: {\n    // Tier 1: Framework (Priority 40) - Changes rarely\n    framework: {\n      name: 'framework',\n      test: /[\\\\/]node_modules[\\\\/](react|react-dom|scheduler|prop-types)[\\\\/]/,\n      priority: 40,\n      enforce: true,\n    },\n    \n    // Tier 2: Large Libraries (Priority 30) - Size-based splitting\n    lib: {\n      test: (module) => module.size() > 160000 && /node_modules/.test(module.identifier()),\n      name: (module) => crypto.createHash('sha1').update(module.identifier()).digest('hex').substring(0, 8),\n      priority: 30,\n      minChunks: 1,\n      reuseExistingChunk: true,\n    },\n    \n    // Tier 3: Commons (Priority 20) - Shared code\n    commons: {\n      name: 'commons',\n      minChunks: 2,\n      priority: 20,\n    },\n    \n    // Tier 4: Vendor (Priority 10) - All other node_modules\n    vendor: {\n      test: /[\\\\/]node_modules[\\\\/]/,\n      name: 'vendor',\n      priority: 10,\n      enforce: true,\n      reuseExistingChunk: true,\n    },\n  },\n}"
             },
             {
-                "type": "header",
-                "level": 3,
-                "text": "2.2 Bundle Splitting Benefits"
+                type: "header",
+                level: 3,
+                text: "2.2 Bundle Splitting Benefits"
             },
             {
-                "type": "table",
-                "headers": ["Cache Group", "Change Frequency", "Cache Duration", "Impact"],
-                "rows": [
+                type: "table",
+                headers: ["Cache Group", "Change Frequency", "Cache Duration", "Impact"],
+                rows: [
                     ["Framework", "Rarely (Next.js updates)", "1 year", "99% cache hit rate"],
                     ["Lib", "Occasionally (dependency updates)", "1 year", "95% cache hit rate"],
                     ["Commons", "Moderate (feature updates)", "1 year", "80% cache hit rate"],
@@ -263,132 +264,132 @@ return (
                 ]
             },
             {
-                "type": "paragraph",
-                "text": "Result: Subsequent page loads leverage cached framework/lib bundles, reducing JavaScript download by 70-80%."
+                type: "paragraph",
+                text: "Result: Subsequent page loads leverage cached framework/lib bundles, reducing JavaScript download by 70-80%."
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "2.3 Tree Shaking Configuration"
+                type: "header",
+                level: 3,
+                text: "2.3 Tree Shaking Configuration"
             },
             {
-                "type": "code",
-                "language": "javascript",
-                "caption": "Tree shaking optimization",
-                "code": "optimization: {\n  usedExports: true,      // Enable tree shaking\n  sideEffects: false,     // Assume no side effects for aggressive tree shaking\n}"
+                type: "code",
+                language: "javascript",
+                caption: "Tree shaking optimization",
+                code: "optimization: {\n  usedExports: true,      // Enable tree shaking\n  sideEffects: false,     // Assume no side effects for aggressive tree shaking\n}"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "2.4 Package Import Optimization"
+                type: "header",
+                level: 3,
+                text: "2.4 Package Import Optimization"
             },
             {
-                "type": "code",
-                "language": "javascript",
-                "caption": "Optimized package imports",
-                "code": "experimental: {\n  optimizePackageImports: ['next-intl', 'lucide-react', 'date-fns', 'lodash-es'],\n}"
+                type: "code",
+                language: "javascript",
+                caption: "Optimized package imports",
+                code: "experimental: {\n  optimizePackageImports: ['next-intl', 'lucide-react', 'date-fns', 'lodash-es'],\n}"
             },
             {
-                "type": "paragraph",
-                "text": "Impact: Reduces bundle size by importing only used components instead of entire libraries."
+                type: "paragraph",
+                text: "Impact: Reduces bundle size by importing only used components instead of entire libraries."
             },
             {
-                "type": "header",
-                "level": 3,
-                "text": "3. Image Optimization Strategy"
+                type: "header",
+                level: 3,
+                text: "3. Image Optimization Strategy"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "3.1 Next.js Image Configuration"
+                type: "header",
+                level: 3,
+                text: "3.1 Next.js Image Configuration"
             },
             {
-                "type": "paragraph",
-                "text": "Location: next.config.ts"
+                type: "paragraph",
+                text: "Location: next.config.ts"
             },
             {
-                "type": "code",
-                "language": "javascript",
-                "caption": "Image optimization configuration",
-                "code": "images: {\n  formats: ['image/avif', 'image/webp'],                    // Modern formats first\n  deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840], // Responsive breakpoints\n  imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],          // Icon sizes\n  minimumCacheTTL: 31536000,                                 // 1 year cache\n  dangerouslyAllowSVG: true,\n}"
+                type: "code",
+                language: "javascript",
+                caption: "Image optimization configuration",
+                code: "images: {\n  formats: ['image/avif', 'image/webp'],                    // Modern formats first\n  deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840], // Responsive breakpoints\n  imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],          // Icon sizes\n  minimumCacheTTL: 31536000,                                 // 1 year cache\n  dangerouslyAllowSVG: true,\n}"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "3.2 Format Cascade Strategy"
+                type: "header",
+                level: 3,
+                text: "3.2 Format Cascade Strategy"
             },
             {
-                "type": "list",
-                "items": [
+                type: "list",
+                items: [
                     "AVIF (60-80% smaller than JPEG) - Served to modern browsers",
                     "WebP (25-35% smaller than JPEG) - Fallback for older browsers",
                     "Original format - Final fallback"
                 ]
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "3.3 WebP Conversion Script"
+                type: "header",
+                level: 3,
+                text: "3.3 WebP Conversion Script"
             },
             {
-                "type": "paragraph",
-                "text": "Location: scripts/convert-to-webp.js"
+                type: "paragraph",
+                text: "Location: scripts/convert-to-webp.js"
             },
             {
-                "type": "code",
-                "language": "javascript",
-                "caption": "Sharp WebP conversion",
-                "code": "sharp(pngPath)\n  .webp({\n    quality: 90,           // High quality for icons\n    alphaQuality: 90,      // High alpha quality\n    effort: 6,             // Maximum compression effort\n    lossless: false,       // Use lossy for better compression\n    smartSubsample: true   // Better color subsampling\n  })\n  .toFile(webpPath);"
+                type: "code",
+                language: "javascript",
+                caption: "Sharp WebP conversion",
+                code: "sharp(pngPath)\n  .webp({\n    quality: 90,           // High quality for icons\n    alphaQuality: 90,      // High alpha quality\n    effort: 6,             // Maximum compression effort\n    lossless: false,       // Use lossy for better compression\n    smartSubsample: true   // Better color subsampling\n  })\n  .toFile(webpPath);"
             },
             {
-                "type": "paragraph",
-                "text": "Results: 60-80% file size reduction while maintaining visual quality."
+                type: "paragraph",
+                text: "Results: 60-80% file size reduction while maintaining visual quality."
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "3.4 Hero Image Optimization"
+                type: "header",
+                level: 3,
+                text: "3.4 Hero Image Optimization"
             },
             {
-                "type": "paragraph",
-                "text": "Files: /public/hero1.webp, /public/hero2.webp, /public/hero3.webp, /public/hero4.webp"
+                type: "paragraph",
+                text: "Files: /public/hero1.webp, /public/hero2.webp, /public/hero3.webp, /public/hero4.webp"
             },
             {
-                "type": "list",
-                "items": [
+                type: "list",
+                items: [
                     "Format: WebP",
                     "Optimization: Aggressive compression with Sharp",
                     "Preloading: Implemented in critical pages"
                 ]
             },
             {
-                "type": "header",
-                "level": 3,
-                "text": "4. Font Loading Optimization"
+                type: "header",
+                level: 3,
+                text: "4. Font Loading Optimization"
             },
             {
-                "type": "paragraph",
-                "text": "Location: app/[locale]/layout.tsx"
+                type: "paragraph",
+                text: "Location: app/[locale]/layout.tsx"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "4.1 Google Fonts with Next.js Font Optimization"
+                type: "header",
+                level: 3,
+                text: "4.1 Google Fonts with Next.js Font Optimization"
             },
             {
-                "type": "code",
-                "language": "typescript",
-                "caption": "Font configuration with optimization",
-                "code": "const geistSans = Geist({\n  variable: \"--font-geist-sans\",\n  subsets: [\"latin\"],\n  display: \"swap\",                    // ✅ Prevents FOIT (Flash of Invisible Text)\n  preload: true,                      // ✅ Preloads font files\n  fallback: [\"system-ui\", \"-apple-system\", \"BlinkMacSystemFont\", \"Segoe UI\", \"Roboto\", \"sans-serif\"],\n});\n\nconst geistMono = Geist_Mono({\n  variable: \"--font-geist-mono\",\n  subsets: [\"latin\"],\n  display: \"swap\",\n  preload: true,\n  fallback: [\"Menlo\", \"Monaco\", \"Consolas\", \"Liberation Mono\", \"Courier New\", \"monospace\"],\n});"
+                type: "code",
+                language: "typescript",
+                caption: "Font configuration with optimization",
+                code: "const geistSans = Geist({\n  variable: \"--font-geist-sans\",\n  subsets: [\"latin\"],\n  display: \"swap\",                    // âœ… Prevents FOIT (Flash of Invisible Text)\n  preload: true,                      // âœ… Preloads font files\n  fallback: [\"system-ui\", \"-apple-system\", \"BlinkMacSystemFont\", \"Segoe UI\", \"Roboto\", \"sans-serif\"],\n});\n\nconst geistMono = Geist_Mono({\n  variable: \"--font-geist-mono\",\n  subsets: [\"latin\"],\n  display: \"swap\",\n  preload: true,\n  fallback: [\"Menlo\", \"Monaco\", \"Consolas\", \"Liberation Mono\", \"Courier New\", \"monospace\"],\n});"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "4.2 Font Loading Strategy"
+                type: "header",
+                level: 3,
+                text: "4.2 Font Loading Strategy"
             },
             {
-                "type": "list",
-                "items": [
+                type: "list",
+                items: [
                     "display: 'swap': Shows fallback font immediately, swaps when custom font loads (prevents FOIT)",
                     "preload: true: Adds <link rel='preload'> for critical fonts",
                     "System font fallbacks: Ensures text is readable during font load",
@@ -396,526 +397,526 @@ return (
                 ]
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "4.3 DNS Prefetching & Preconnect"
+                type: "header",
+                level: 3,
+                text: "4.3 DNS Prefetching & Preconnect"
             },
             {
-                "type": "paragraph",
-                "text": "Location: app/[locale]/layout.tsx"
+                type: "paragraph",
+                text: "Location: app/[locale]/layout.tsx"
             },
             {
-                "type": "code",
-                "language": "html",
-                "caption": "DNS prefetching and preconnect",
-                "code": "<link rel=\"dns-prefetch\" href=\"//fonts.googleapis.com\" />\n<link rel=\"dns-prefetch\" href=\"//fonts.gstatic.com\" />\n<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" crossOrigin=\"\" />\n<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossOrigin=\"\" />"
+                type: "code",
+                language: "html",
+                caption: "DNS prefetching and preconnect",
+                code: "<link rel=\"dns-prefetch\" href=\"//fonts.googleapis.com\" />\n<link rel=\"dns-prefetch\" href=\"//fonts.gstatic.com\" />\n<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" crossOrigin=\"\" />\n<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossOrigin=\"\" />"
             },
             {
-                "type": "paragraph",
-                "text": "Impact: Reduces font loading time by 100-300ms through early DNS resolution and connection establishment."
+                type: "paragraph",
+                text: "Impact: Reduces font loading time by 100-300ms through early DNS resolution and connection establishment."
             },
             {
-                "type": "header",
-                "level": 3,
-                "text": "5. Resource Prioritization"
+                type: "header",
+                level: 3,
+                text: "5. Resource Prioritization"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "5.1 Critical Resource Preloading"
+                type: "header",
+                level: 3,
+                text: "5.1 Critical Resource Preloading"
             },
             {
-                "type": "paragraph",
-                "text": "Pattern found in: app/[locale]/developers/[slug]/page.tsx"
+                type: "paragraph",
+                text: "Pattern found in: app/[locale]/developers/[slug]/page.tsx"
             },
             {
-                "type": "code",
-                "language": "tsx",
-                "caption": "Preload critical resources",
-                "code": "{/* Preload critical resources */}\n<link\n  rel=\"preload\"\n  href=\"/fonts/primary.woff2\"\n  as=\"font\"\n  type=\"font/woff2\"\n  crossOrigin=\"\"\n/>\n{/* Preload first project images */}\n{developer.projects?.[0]?.images?.[0] && (\n  <link\n    rel=\"preload\"\n    as=\"image\"\n    href={developer.projects[0].images[0]}\n  />\n)}"
+                type: "code",
+                language: "tsx",
+                caption: "Preload critical resources",
+                code: "{/* Preload critical resources */}\n<link\n  rel=\"preload\"\n  href=\"/fonts/primary.woff2\"\n  as=\"font\"\n  type=\"font/woff2\"\n  crossOrigin=\"\"\n/>\n{/* Preload first project images */}\n{developer.projects?.[0]?.images?.[0] && (\n  <link\n    rel=\"preload\"\n    as=\"image\"\n    href={developer.projects[0].images[0]}\n  />\n)}"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "5.2 DNS Prefetch Strategy"
+                type: "header",
+                level: 4,
+                text: "5.2 DNS Prefetch Strategy"
             },
             {
-                "type": "paragraph",
-                "text": "Location: app/[locale]/layout.tsx"
+                type: "paragraph",
+                text: "Location: app/[locale]/layout.tsx"
             },
             {
-                "type": "code",
-                "language": "html",
-                "caption": "DNS prefetch for third-party resources",
-                "code": "<link rel=\"dns-prefetch\" href=\"//fonts.googleapis.com\" />\n<link rel=\"dns-prefetch\" href=\"//fonts.gstatic.com\" />\n<link rel=\"dns-prefetch\" href=\"//www.google-analytics.com\" />\n<link rel=\"dns-prefetch\" href=\"//www.googletagmanager.com\" />"
+                type: "code",
+                language: "html",
+                caption: "DNS prefetch for third-party resources",
+                code: "<link rel=\"dns-prefetch\" href=\"//fonts.googleapis.com\" />\n<link rel=\"dns-prefetch\" href=\"//fonts.gstatic.com\" />\n<link rel=\"dns-prefetch\" href=\"//www.google-analytics.com\" />\n<link rel=\"dns-prefetch\" href=\"//www.googletagmanager.com\" />"
             },
             {
-                "type": "paragraph",
-                "text": "Impact: Resolves DNS 100-300ms earlier for third-party resources."
+                type: "paragraph",
+                text: "Impact: Resolves DNS 100-300ms earlier for third-party resources."
             },
             {
-                "type": "header",
-                "level": 3,
-                "text": "6. Caching Strategy"
+                type: "header",
+                level: 3,
+                text: "6. Caching Strategy"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "6.1 Static Asset Caching"
+                type: "header",
+                level: 4,
+                text: "6.1 Static Asset Caching"
             },
             {
-                "type": "paragraph",
-                "text": "Location: next.config.ts"
+                type: "paragraph",
+                text: "Location: next.config.ts"
             },
             {
-                "type": "code",
-                "language": "javascript",
-                "caption": "Images - 1 year immutable cache",
-                "code": "{\n  source: '/(.*)\\\\.(?:ico|png|jpg|jpeg|gif|webp|avif|svg)$',\n  headers: [\n    {\n      key: 'Cache-Control',\n      value: 'public, max-age=31536000, immutable'  // 1 year\n    }\n  ]\n}"
+                type: "code",
+                language: "javascript",
+                caption: "Images - 1 year immutable cache",
+                code: "{\n  source: '/(.*)\\\\.(?:ico|png|jpg|jpeg|gif|webp|avif|svg)$',\n  headers: [\n    {\n      key: 'Cache-Control',\n      value: 'public, max-age=31536000, immutable'  // 1 year\n    }\n  ]\n}"
             },
             {
-                "type": "code",
-                "language": "javascript",
-                "caption": "JS/CSS assets - 1 year immutable cache",
-                "code": "{\n  source: '/(.*)\\\\.(?:js|css|woff|woff2|ttf|eot)$',\n  headers: [\n    {\n      key: 'Cache-Control',\n      value: 'public, max-age=31536000, immutable'  // 1 year\n    }\n  ]\n}"
+                type: "code",
+                language: "javascript",
+                caption: "JS/CSS assets - 1 year immutable cache",
+                code: "{\n  source: '/(.*)\\\\.(?:js|css|woff|woff2|ttf|eot)$',\n  headers: [\n    {\n      key: 'Cache-Control',\n      value: 'public, max-age=31536000, immutable'  // 1 year\n    }\n  ]\n}"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "6.2 Image Cache Configuration"
+                type: "header",
+                level: 4,
+                text: "6.2 Image Cache Configuration"
             },
             {
-                "type": "code",
-                "language": "javascript",
-                "caption": "Image cache TTL",
-                "code": "images: {\n  minimumCacheTTL: 31536000,  // 1 year for optimized images\n}"
+                type: "code",
+                language: "javascript",
+                caption: "Image cache TTL",
+                code: "images: {\n  minimumCacheTTL: 31536000,  // 1 year for optimized images\n}"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "6.3 Cache Strategy Benefits"
+                type: "header",
+                level: 4,
+                text: "6.3 Cache Strategy Benefits"
             },
             {
-                "type": "table",
-                "headers": ["Resource Type", "Cache Duration", "Invalidation Strategy", "Impact"],
-                "rows": [
+                type: "table",
+                headers: ["Resource Type", "Cache Duration", "Invalidation Strategy", "Impact"],
+                rows: [
                     ["Images", "1 year", "Content hash in filename", "99% cache hit rate"],
                     ["JS/CSS", "1 year", "Next.js build hash", "95% cache hit rate"],
                     ["Fonts", "1 year", "Google Fonts versioning", "99% cache hit rate"]
                 ]
             },
             {
-                "type": "paragraph",
-                "text": "Result: Repeat visitors load 80-90% of assets from cache."
+                type: "paragraph",
+                text: "Result: Repeat visitors load 80-90% of assets from cache."
             },
             {
-                "type": "header",
-                "level": 3,
-                "text": "7. Compression & Minification"
+                type: "header",
+                level: 3,
+                text: "7. Compression & Minification"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "7.1 Next.js Built-in Optimizations"
+                type: "header",
+                level: 4,
+                text: "7.1 Next.js Built-in Optimizations"
             },
             {
-                "type": "paragraph",
-                "text": "Location: next.config.ts"
+                type: "paragraph",
+                text: "Location: next.config.ts"
             },
             {
-                "type": "code",
-                "language": "javascript",
-                "caption": "Compression and minification config",
-                "code": "compress: true,              // Gzip/Brotli compression\nswcMinify: true,            // SWC-based minification (faster than Terser)\nreactStrictMode: true,      // Development-time optimization checks\ngenerateEtags: true,        // Enable ETags for cache validation\ncompiler: {\n  removeConsole: process.env.NODE_ENV === 'production' ? {\n    exclude: ['error', 'warn'],  // Remove console.log in production\n  } : false,\n  reactRemoveProperties: process.env.NODE_ENV === 'production' ? {\n    properties: ['^data-testid$'],  // Remove test attributes\n  } : false,\n}"
+                type: "code",
+                language: "javascript",
+                caption: "Compression and minification config",
+                code: "compress: true,              // Gzip/Brotli compression\nswcMinify: true,            // SWC-based minification (faster than Terser)\nreactStrictMode: true,      // Development-time optimization checks\ngenerateEtags: true,        // Enable ETags for cache validation\ncompiler: {\n  removeConsole: process.env.NODE_ENV === 'production' ? {\n    exclude: ['error', 'warn'],  // Remove console.log in production\n  } : false,\n  reactRemoveProperties: process.env.NODE_ENV === 'production' ? {\n    properties: ['^data-testid$'],  // Remove test attributes\n  } : false,\n}"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "7.2 Compression Results"
+                type: "header",
+                level: 4,
+                text: "7.2 Compression Results"
             },
             {
-                "type": "table",
-                "headers": ["File Type", "Original Size", "Compressed Size", "Reduction"],
-                "rows": [
+                type: "table",
+                headers: ["File Type", "Original Size", "Compressed Size", "Reduction"],
+                rows: [
                     ["JavaScript", "100 KB", "30-40 KB", "60-70%"],
                     ["CSS", "50 KB", "10-15 KB", "70-80%"],
                     ["HTML", "20 KB", "5-8 KB", "60-75%"]
                 ]
             },
             {
-                "type": "header",
-                "level": 3,
-                "text": "8. Server-Side Rendering (SSR) Optimizations"
+                type: "header",
+                level: 3,
+                text: "8. Server-Side Rendering (SSR) Optimizations"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "8.1 Suspense Boundaries"
+                type: "header",
+                level: 4,
+                text: "8.1 Suspense Boundaries"
             },
             {
-                "type": "paragraph",
-                "text": "Location: app/[locale]/layout.tsx"
+                type: "paragraph",
+                text: "Location: app/[locale]/layout.tsx"
             },
             {
-                "type": "code",
-                "language": "tsx",
-                "caption": "Suspense boundary implementation",
-                "code": "<Suspense fallback={<LoadingFallback />}>\n  <main id=\"main-content\" className=\"relative\">\n    {children}\n  </main>\n</Suspense>"
+                type: "code",
+                language: "tsx",
+                caption: "Suspense boundary implementation",
+                code: "<Suspense fallback={<LoadingFallback />}>\n  <main id=\"main-content\" className=\"relative\">\n    {children}\n  </main>\n</Suspense>"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "8.2 Loading Skeleton Strategy"
+                type: "header",
+                level: 4,
+                text: "8.2 Loading Skeleton Strategy"
             },
             {
-                "type": "code",
-                "language": "tsx",
-                "caption": "Loading fallback component",
-                "code": "function LoadingFallback() {\n  return (\n    <div className=\"min-h-screen flex items-center justify-center\">\n      <div className=\"animate-pulse flex flex-col items-center space-y-4\">\n        <div className=\"w-16 h-16 bg-gray-300 rounded-full\"></div>\n        <div className=\"h-4 w-32 bg-gray-300 rounded\"></div>\n      </div>\n    </div>\n  );\n}"
+                type: "code",
+                language: "tsx",
+                caption: "Loading fallback component",
+                code: "function LoadingFallback() {\n  return (\n    <div className=\"min-h-screen flex items-center justify-center\">\n      <div className=\"animate-pulse flex flex-col items-center space-y-4\">\n        <div className=\"w-16 h-16 bg-gray-300 rounded-full\"></div>\n        <div className=\"h-4 w-32 bg-gray-300 rounded\"></div>\n      </div>\n    </div>\n  );\n}"
             },
             {
-                "type": "paragraph",
-                "text": "Impact: Prevents layout shift (CLS = 0) during hydration."
+                type: "paragraph",
+                text: "Impact: Prevents layout shift (CLS = 0) during hydration."
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "8.3 Hydration Optimization"
+                type: "header",
+                level: 4,
+                text: "8.3 Hydration Optimization"
             },
             {
-                "type": "code",
-                "language": "html",
-                "caption": "Suppress hydration warnings",
-                "code": "<html suppressHydrationWarning>\n  <body suppressHydrationWarning>\n    {/* Content */}\n  </body>\n</html>"
+                type: "code",
+                language: "html",
+                caption: "Suppress hydration warnings",
+                code: "<html suppressHydrationWarning>\n  <body suppressHydrationWarning>\n    {/* Content */}\n  </body>\n</html>"
             },
             {
-                "type": "paragraph",
-                "text": "Purpose: Prevents hydration warnings for dynamic content (theme, locale)."
+                type: "paragraph",
+                text: "Purpose: Prevents hydration warnings for dynamic content (theme, locale)."
             },
             {
-                "type": "header",
-                "level": 3,
-                "text": "9. Build Optimization"
+                type: "header",
+                level: 3,
+                text: "9. Build Optimization"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "9.1 Standalone Output"
+                type: "header",
+                level: 4,
+                text: "9.1 Standalone Output"
             },
             {
-                "type": "paragraph",
-                "text": "Location: next.config.ts"
+                type: "paragraph",
+                text: "Location: next.config.ts"
             },
             {
-                "type": "code",
-                "language": "javascript",
-                "caption": "Standalone build configuration",
-                "code": "output: 'standalone',  // Optimized production build"
+                type: "code",
+                language: "javascript",
+                caption: "Standalone build configuration",
+                code: "output: 'standalone',  // Optimized production build"
             },
             {
-                "type": "paragraph",
-                "text": "Benefits:"
+                type: "paragraph",
+                text: "Benefits:"
             },
             {
-                "type": "list",
-                "items": [
+                type: "list",
+                items: [
                     "Smaller Docker images",
                     "Faster deployment",
                     "Reduced server memory usage"
                 ]
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "9.2 Package Dependencies"
+                type: "header",
+                level: 4,
+                text: "9.2 Package Dependencies"
             },
             {
-                "type": "paragraph",
-                "text": "Location: package.json"
+                type: "paragraph",
+                text: "Location: package.json"
             },
             {
-                "type": "paragraph",
-                "text": "Performance-focused dependencies:"
+                type: "paragraph",
+                text: "Performance-focused dependencies:"
             },
             {
-                "type": "code",
-                "language": "json",
-                "caption": "Performance tooling packages",
-                "code": "{\n  \"sharp\": \"^0.34.3\",                    // Fast image processing\n  \"next\": \"15.5.7\",                       // Latest Next.js optimizations\n  \"@next/bundle-analyzer\": \"^15.4.2\",    // Bundle size analysis\n  \"compression-webpack-plugin\": \"^11.1.0\", // Additional compression\n  \"terser-webpack-plugin\": \"^5.3.11\"     // Advanced minification\n}"
+                type: "code",
+                language: "json",
+                caption: "Performance tooling packages",
+                code: "{\n  \"sharp\": \"^0.34.3\",                    // Fast image processing\n  \"next\": \"15.5.7\",                       // Latest Next.js optimizations\n  \"@next/bundle-analyzer\": \"^15.4.2\",    // Bundle size analysis\n  \"compression-webpack-plugin\": \"^11.1.0\", // Additional compression\n  \"terser-webpack-plugin\": \"^5.3.11\"     // Advanced minification\n}"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "9.3 Development Optimizations"
+                type: "header",
+                level: 4,
+                text: "9.3 Development Optimizations"
             },
             {
-                "type": "code",
-                "language": "json",
-                "caption": "Development scripts",
-                "code": "{\n  \"scripts\": {\n    \"dev\": \"next dev --turbo\",           // Turbopack for faster dev builds\n    \"analyze\": \"ANALYZE=true next build\" // Bundle analysis\n  }\n}"
+                type: "code",
+                language: "json",
+                caption: "Development scripts",
+                code: "{\n  \"scripts\": {\n    \"dev\": \"next dev --turbo\",           // Turbopack for faster dev builds\n    \"analyze\": \"ANALYZE=true next build\" // Bundle analysis\n  }\n}"
             },
             {
-                "type": "header",
-                "level": 3,
-                "text": "10. Security Headers (Performance Impact)"
+                type: "header",
+                level: 3,
+                text: "10. Security Headers (Performance Impact)"
             },
             {
-                "type": "paragraph",
-                "text": "Location: next.config.ts"
+                type: "paragraph",
+                text: "Location: next.config.ts"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "10.1 Performance-Enhancing Headers"
+                type: "header",
+                level: 4,
+                text: "10.1 Performance-Enhancing Headers"
             },
             {
-                "type": "code",
-                "language": "javascript",
-                "caption": "Performance-related security headers",
-                "code": "{\n  key: 'X-DNS-Prefetch-Control',\n  value: 'on'  // ✅ Enables DNS prefetching\n},\n{\n  key: 'Strict-Transport-Security',\n  value: 'max-age=63072000; includeSubDomains; preload'  // ✅ HSTS preload\n}"
+                type: "code",
+                language: "javascript",
+                caption: "Performance-related security headers",
+                code: "{\n  key: 'X-DNS-Prefetch-Control',\n  value: 'on'  // âœ… Enables DNS prefetching\n},\n{\n  key: 'Strict-Transport-Security',\n  value: 'max-age=63072000; includeSubDomains; preload'  // âœ… HSTS preload\n}"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "10.2 Client Hints"
+                type: "header",
+                level: 4,
+                text: "10.2 Client Hints"
             },
             {
-                "type": "code",
-                "language": "html",
-                "caption": "Client hints meta tag",
-                "code": "<meta httpEquiv=\"Accept-CH\" content=\"DPR, Viewport-Width, Width\" />"
+                type: "code",
+                language: "html",
+                caption: "Client hints meta tag",
+                code: "<meta httpEquiv=\"Accept-CH\" content=\"DPR, Viewport-Width, Width\" />"
             },
             {
-                "type": "paragraph",
-                "text": "Impact: Enables server to send optimally-sized images based on device capabilities."
+                type: "paragraph",
+                text: "Impact: Enables server to send optimally-sized images based on device capabilities."
             },
             {
-                "type": "header",
-                "level": 3,
-                "text": "11. Animation Performance"
+                type: "header",
+                level: 3,
+                text: "11. Animation Performance"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "11.1 Framer Motion Optimization"
+                type: "header",
+                level: 4,
+                text: "11.1 Framer Motion Optimization"
             },
             {
-                "type": "paragraph",
-                "text": "Location: HeroLux.tsx"
+                type: "paragraph",
+                text: "Location: HeroLux.tsx"
             },
             {
-                "type": "code",
-                "language": "tsx",
-                "caption": "GPU-accelerated animations",
-                "code": "// ✅ Use transform instead of position changes\nanimate={{ scale: 1.05 }}  // GPU-accelerated\n\n// ✅ Decouple animations from critical content\nclassName=\"absolute inset-0 z-30\"  // Separate layer\n\n// ✅ Conditional animation rendering\n{state.isComplete && (\n  <MotionDiv initial={{ opacity: 0 }} animate={{ opacity: 1 }}>\n    {/* Non-critical animated content */}\n  </MotionDiv>\n)}"
+                type: "code",
+                language: "tsx",
+                caption: "GPU-accelerated animations",
+                code: "// âœ… Use transform instead of position changes\nanimate={{ scale: 1.05 }}  // GPU-accelerated\n\n// âœ… Decouple animations from critical content\nclassName=\"absolute inset-0 z-30\"  // Separate layer\n\n// âœ… Conditional animation rendering\n{state.isComplete && (\n  <MotionDiv initial={{ opacity: 0 }} animate={{ opacity: 1 }}>\n    {/* Non-critical animated content */}\n  </MotionDiv>\n)}"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "11.2 Animation Sequence Management"
+                type: "header",
+                level: 4,
+                text: "11.2 Animation Sequence Management"
             },
             {
-                "type": "code",
-                "language": "typescript",
-                "caption": "Animation sequence hook with error handling",
-                "code": "const useAnimationSequence = (controls, isMounted) => {\n  const [animationComplete, setAnimationComplete] = useState(false);\n  \n  useEffect(() => {\n    if (!isMounted) return;\n    \n    const runAnimationSequence = async () => {\n      try {\n        await new Promise((resolve) => setTimeout(resolve, 500));\n        await controls.start(\"logoReveal\");\n        await new Promise((resolve) => setTimeout(resolve, 800));\n        await controls.start(\"curtainOpen\");\n        setAnimationComplete(true);\n      } catch (error) {\n        setAnimationComplete(true);  // ✅ Graceful fallback\n      }\n    };\n    \n    runAnimationSequence();\n  }, [controls, isMounted]);\n  \n  return animationComplete;\n};"
+                type: "code",
+                language: "typescript",
+                caption: "Animation sequence hook with error handling",
+                code: "const useAnimationSequence = (controls, isMounted) => {\n  const [animationComplete, setAnimationComplete] = useState(false);\n  \n  useEffect(() => {\n    if (!isMounted) return;\n    \n    const runAnimationSequence = async () => {\n      try {\n        await new Promise((resolve) => setTimeout(resolve, 500));\n        await controls.start(\"logoReveal\");\n        await new Promise((resolve) => setTimeout(resolve, 800));\n        await controls.start(\"curtainOpen\");\n        setAnimationComplete(true);\n      } catch (error) {\n        setAnimationComplete(true);  // âœ… Graceful fallback\n      }\n    };\n    \n    runAnimationSequence();\n  }, [controls, isMounted]);\n  \n  return animationComplete;\n};"
             },
             {
-                "type": "paragraph",
-                "text": "Key Principles:"
+                type: "paragraph",
+                text: "Key Principles:"
             },
             {
-                "type": "list",
-                "items": [
+                type: "list",
+                items: [
                     "Non-blocking: Animations run independently of content rendering",
                     "Graceful degradation: Errors don't break the page",
                     "GPU acceleration: Use transform/opacity for 60fps animations"
                 ]
             },
             {
-                "type": "header",
-                "level": 3,
-                "text": "12. Core Web Vitals Monitoring"
+                type: "header",
+                level: 3,
+                text: "12. Core Web Vitals Monitoring"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "12.1 Web Vitals Attribution"
+                type: "header",
+                level: 4,
+                text: "12.1 Web Vitals Attribution"
             },
             {
-                "type": "paragraph",
-                "text": "Location: next.config.ts"
+                type: "paragraph",
+                text: "Location: next.config.ts"
             },
             {
-                "type": "code",
-                "language": "javascript",
-                "caption": "Web vitals tracking",
-                "code": "experimental: {\n  webVitalsAttribution: ['CLS', 'LCP'],  // Track attribution for debugging\n}"
+                type: "code",
+                language: "javascript",
+                caption: "Web vitals tracking",
+                code: "experimental: {\n  webVitalsAttribution: ['CLS', 'LCP'],  // Track attribution for debugging\n}"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "12.2 Performance Scripts"
+                type: "header",
+                level: 4,
+                text: "12.2 Performance Scripts"
             },
             {
-                "type": "paragraph",
-                "text": "Location: package.json"
+                type: "paragraph",
+                text: "Location: package.json"
             },
             {
-                "type": "code",
-                "language": "json",
-                "caption": "Performance audit scripts",
-                "code": "{\n  \"scripts\": {\n    \"performance:audit\": \"node scripts/web-vitals-audit.js\",\n    \"lighthouse\": \"lhci autorun\"\n  }\n}"
+                type: "code",
+                language: "json",
+                caption: "Performance audit scripts",
+                code: "{\n  \"scripts\": {\n    \"performance:audit\": \"node scripts/web-vitals-audit.js\",\n    \"lighthouse\": \"lhci autorun\"\n  }\n}"
             },
             {
-                "type": "header",
-                "level": 3,
-                "text": "13. Key Performance Patterns Summary"
+                type: "header",
+                level: 3,
+                text: "13. Key Performance Patterns Summary"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "13.1 Critical Rendering Path"
+                type: "header",
+                level: 4,
+                text: "13.1 Critical Rendering Path"
             },
             {
-                "type": "list",
-                "items": [
-                    "✅ Render LCP elements immediately - No animation blocking",
-                    "✅ Use z-index layering - Decouple animations from content",
-                    "✅ SSR skeleton - Prevents hydration layout shift",
-                    "✅ Preload critical images - Hero images load first",
-                    "✅ Lazy load everything else - Below-the-fold content deferred"
+                type: "list",
+                items: [
+                    "âœ… Render LCP elements immediately - No animation blocking",
+                    "âœ… Use z-index layering - Decouple animations from content",
+                    "âœ… SSR skeleton - Prevents hydration layout shift",
+                    "âœ… Preload critical images - Hero images load first",
+                    "âœ… Lazy load everything else - Below-the-fold content deferred"
                 ]
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "13.2 Bundle Optimization"
+                type: "header",
+                level: 4,
+                text: "13.2 Bundle Optimization"
             },
             {
-                "type": "list",
-                "items": [
-                    "✅ Split bundles by change frequency - Framework vs app code",
-                    "✅ Aggressive tree shaking - Remove unused code",
-                    "✅ Package import optimization - Import only what's needed",
-                    "✅ Code splitting - Route-based automatic splitting"
+                type: "list",
+                items: [
+                    "âœ… Split bundles by change frequency - Framework vs app code",
+                    "âœ… Aggressive tree shaking - Remove unused code",
+                    "âœ… Package import optimization - Import only what's needed",
+                    "âœ… Code splitting - Route-based automatic splitting"
                 ]
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "13.3 Asset Optimization"
+                type: "header",
+                level: 4,
+                text: "13.3 Asset Optimization"
             },
             {
-                "type": "list",
-                "items": [
-                    "✅ AVIF/WebP formats - 60-80% smaller images",
-                    "✅ Aggressive caching - 1 year TTL for static assets",
-                    "✅ Font optimization - display: swap + preload",
-                    "✅ Compression - Gzip/Brotli for all text assets"
+                type: "list",
+                items: [
+                    "âœ… AVIF/WebP formats - 60-80% smaller images",
+                    "âœ… Aggressive caching - 1 year TTL for static assets",
+                    "âœ… Font optimization - display: swap + preload",
+                    "âœ… Compression - Gzip/Brotli for all text assets"
                 ]
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "13.4 Network Optimization"
+                type: "header",
+                level: 4,
+                text: "13.4 Network Optimization"
             },
             {
-                "type": "list",
-                "items": [
-                    "✅ DNS prefetching - Early DNS resolution",
-                    "✅ Preconnect - Early connection establishment",
-                    "✅ Resource hints - Preload critical resources",
-                    "✅ HTTP/2 - Multiplexing and server push"
+                type: "list",
+                items: [
+                    "âœ… DNS prefetching - Early DNS resolution",
+                    "âœ… Preconnect - Early connection establishment",
+                    "âœ… Resource hints - Preload critical resources",
+                    "âœ… HTTP/2 - Multiplexing and server push"
                 ]
             },
             {
-                "type": "header",
-                "level": 3,
-                "text": "14. Verification & Monitoring"
+                type: "header",
+                level: 3,
+                text: "14. Verification & Monitoring"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "14.1 Google Search Console Results"
+                type: "header",
+                level: 4,
+                text: "14.1 Google Search Console Results"
             },
             {
-                "type": "paragraph",
-                "text": "Core Web Vitals Assessment:"
+                type: "paragraph",
+                text: "Core Web Vitals Assessment:"
             },
             {
-                "type": "table",
-                "headers": ["Metric", "Target", "Achieved", "Status"],
-                "rows": [
-                    ["First Contentful Paint (FCP)", "<1.8s", "0.3s", "✅ Excellent"],
-                    ["Largest Contentful Paint (LCP)", "<2.5s", "0.9s", "✅ Excellent"],
-                    ["Cumulative Layout Shift (CLS)", "<0.1", "0", "✅ Perfect"],
-                    ["Time to Interactive (TTI)", "<3.8s", "1.2s", "✅ Fast"],
-                    ["Total Blocking Time (TBT)", "<200ms", "45ms", "✅ Minimal"]
+                type: "table",
+                headers: ["Metric", "Target", "Achieved", "Status"],
+                rows: [
+                    ["First Contentful Paint (FCP)", "<1.8s", "0.3s", "âœ… Excellent"],
+                    ["Largest Contentful Paint (LCP)", "<2.5s", "0.9s", "âœ… Excellent"],
+                    ["Cumulative Layout Shift (CLS)", "<0.1", "0", "âœ… Perfect"],
+                    ["Time to Interactive (TTI)", "<3.8s", "1.2s", "âœ… Fast"],
+                    ["Total Blocking Time (TBT)", "<200ms", "45ms", "âœ… Minimal"]
                 ]
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "14.2 Continuous Monitoring"
+                type: "header",
+                level: 4,
+                text: "14.2 Continuous Monitoring"
             },
             {
-                "type": "code",
-                "language": "bash",
-                "caption": "Performance monitoring commands",
-                "code": "# Bundle analysis\nnpm run analyze\n\n# Lighthouse audit\nnpm run lighthouse\n\n# Performance audit\nnpm run performance:audit"
+                type: "code",
+                language: "bash",
+                caption: "Performance monitoring commands",
+                code: "# Bundle analysis\nnpm run analyze\n\n# Lighthouse audit\nnpm run lighthouse\n\n# Performance audit\nnpm run performance:audit"
             },
             {
-                "type": "header",
-                "level": 3,
-                "text": "15. Optimization Checklist"
+                type: "header",
+                level: 3,
+                text: "15. Optimization Checklist"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "Before Deployment"
+                type: "header",
+                level: 4,
+                text: "Before Deployment"
             },
             {
-                "type": "list",
-                "items": [
-                    "☑ Run bundle analyzer to check for unexpected large bundles",
-                    "☑ Verify all hero images are in WebP/AVIF format",
-                    "☑ Check that fonts are preloaded with display: swap",
-                    "☑ Ensure critical CSS is inlined",
-                    "☑ Validate cache headers are set correctly",
-                    "☑ Test LCP on 3G connection",
-                    "☑ Verify CLS is 0 across all pages",
-                    "☑ Check that animations don't block rendering"
+                type: "list",
+                items: [
+                    "â˜‘ Run bundle analyzer to check for unexpected large bundles",
+                    "â˜‘ Verify all hero images are in WebP/AVIF format",
+                    "â˜‘ Check that fonts are preloaded with display: swap",
+                    "â˜‘ Ensure critical CSS is inlined",
+                    "â˜‘ Validate cache headers are set correctly",
+                    "â˜‘ Test LCP on 3G connection",
+                    "â˜‘ Verify CLS is 0 across all pages",
+                    "â˜‘ Check that animations don't block rendering"
                 ]
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "Post-Deployment"
+                type: "header",
+                level: 4,
+                text: "Post-Deployment"
             },
             {
-                "type": "list",
-                "items": [
-                    "☑ Monitor Google Search Console for Core Web Vitals",
-                    "☑ Run Lighthouse audit on production",
-                    "☑ Check bundle sizes haven't increased",
-                    "☑ Verify cache hit rates in CDN analytics",
-                    "☑ Monitor Time to First Byte (TTFB)"
+                type: "list",
+                items: [
+                    "â˜‘ Monitor Google Search Console for Core Web Vitals",
+                    "â˜‘ Run Lighthouse audit on production",
+                    "â˜‘ Check bundle sizes haven't increased",
+                    "â˜‘ Verify cache hit rates in CDN analytics",
+                    "â˜‘ Monitor Time to First Byte (TTFB)"
                 ]
             },
             {
-                "type": "header",
-                "level": 3,
-                "text": "16. Future Optimization Opportunities"
+                type: "header",
+                level: 3,
+                text: "16. Future Optimization Opportunities"
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "16.1 Potential Improvements"
+                type: "header",
+                level: 4,
+                text: "16.1 Potential Improvements"
             },
             {
-                "type": "list",
-                "items": [
+                type: "list",
+                items: [
                     "Edge Caching: Implement Vercel Edge Network for sub-50ms TTFB",
                     "Image CDN: Use dedicated image CDN for global distribution",
                     "Service Worker: Implement offline-first caching strategy",
@@ -924,28 +925,28 @@ return (
                 ]
             },
             {
-                "type": "header",
-                "level": 4,
-                "text": "16.2 Experimental Features"
+                type: "header",
+                level: 4,
+                text: "16.2 Experimental Features"
             },
             {
-                "type": "code",
-                "language": "javascript",
-                "caption": "Next.js experimental features",
-                "code": "experimental: {\n  ppr: true,              // Partial Prerendering (Next.js 15+)\n  reactCompiler: true,    // React Compiler for automatic memoization\n}"
+                type: "code",
+                language: "javascript",
+                caption: "Next.js experimental features",
+                code: "experimental: {\n  ppr: true,              // Partial Prerendering (Next.js 15+)\n  reactCompiler: true,    // React Compiler for automatic memoization\n}"
             },
             {
-                "type": "header",
-                "level": 3,
-                "text": "Conclusion"
+                type: "header",
+                level: 3,
+                text: "Conclusion"
             },
             {
-                "type": "paragraph",
-                "text": "The Noor Saray Dubai platform achieves exceptional Core Web Vitals through a holistic approach to performance optimization:"
+                type: "paragraph",
+                text: "The Noor Saray Dubai platform achieves exceptional Core Web Vitals through a holistic approach to performance optimization:"
             },
             {
-                "type": "list",
-                "items": [
+                type: "list",
+                items: [
                     "Architecture: Animation decoupling ensures LCP elements render immediately",
                     "Bundling: Four-tier cache group strategy maximizes cache efficiency",
                     "Images: AVIF/WebP formats with 1-year caching reduce bandwidth by 70%",
@@ -955,17 +956,17 @@ return (
                 ]
             },
             {
-                "type": "paragraph",
-                "text": "Key Takeaway: Performance is achieved through architectural decisions (animation decoupling, z-index layering) rather than just optimization techniques. The breakthrough was realizing that animations can overlay content without blocking the critical rendering path."
+                type: "paragraph",
+                text: "Key Takeaway: Performance is achieved through architectural decisions (animation decoupling, z-index layering) rather than just optimization techniques. The breakthrough was realizing that animations can overlay content without blocking the critical rendering path."
             },
             {
-                "type": "header",
-                "level": 3,
-                "text": "References"
+                type: "header",
+                level: 3,
+                text: "References"
             },
             {
-                "type": "list",
-                "items": [
+                type: "list",
+                items: [
                     "HeroLux.tsx - Animation decoupling implementation",
                     "next.config.ts - Webpack and image optimization",
                     "layout.tsx - Font loading and resource hints",
@@ -974,17 +975,308 @@ return (
                 ]
             },
             {
-                "type": "paragraph",
-                "text": "Document Version: 1.0"
+                type: "paragraph",
+                text: "Document Version: 1.0"
             },
             {
-                "type": "paragraph",
-                "text": "Last Updated: 2026-01-13"
+                type: "paragraph",
+                text: "Last Updated: 2026-01-13"
             },
             {
-                "type": "paragraph",
-                "text": "Status: DECLASSIFIED"
+                type: "paragraph",
+                text: "Status: DECLASSIFIED"
             }
         ]
-    }
+    },
+    {
+    "id": "LOG-2023-03",
+    "title": "Production ERP Performance Crisis: Connection Pool Exhaustion Analysis",
+    "category": "OPTIMIZATION",
+    "systemType": "ASP.NET WinForms ERP (SQL Server, 200+ Active Users)",
+    "objective": "Reverse-engineer and resolve critical performance degradation in live production ERP system without disrupting daily business operations.",
+    "methodology": [
+        "Live System Profiling",
+        "Connection Pool Telemetry Analysis",
+        "Incremental Hotfix Deployment",
+        "Zero-Downtime Remediation"
+    ],
+    "findings": "Successfully identified and resolved systemic connection leakage, unsafe concurrency patterns, and SQL injection vulnerabilities in a live production environment. Deployed fixes incrementally without breaking production. Achieved 99% performance improvement (92,000ms → 1,040ms) under 200 concurrent users while maintaining 100% system uptime.",
+    "status": "DECLASSIFIED",
+    "contentBlocks": [
+        {
+            "type": "header",
+            "level": 3,
+            "text": "1. The Crisis Situation"
+        },
+        {
+            "type": "paragraph",
+            "text": "The client's production ERP system was experiencing severe performance degradation affecting 200+ concurrent users during business hours. Application lag increased progressively throughout the day, impacting employee login, data updates, and critical business workflows. The client had attempted restarting the server multiple times, which provided only temporary relief. I was brought in as a freelance consultant to diagnose and resolve the issue while the system remained in production."
+        },
+        {
+            "type": "header",
+            "level": 3,
+            "text": "2. Initial Investigation: Tracing the Problem"
+        },
+        {
+            "type": "paragraph",
+            "text": "I did not trust the initial symptoms. Instead of accepting that the problem was 'slow queries' or 'bad data,' I conducted end-to-end request tracing through critical flows. I monitored database connection behavior during concurrent operations and observed a disturbing pattern: requests completed successfully, but connections remained open long after they should have been released."
+        },
+        {
+            "type": "list",
+            "items": [
+                "Traced login authentication flow and employee update operations",
+                "Monitored SQL Server connection pool metrics in real-time",
+                "Observed that response times degraded predictably with concurrent load",
+                "Found methods opening connections without deterministic cleanup paths",
+                "Reproduced the issue locally with production-scale data",
+                "Confirmed server restarts temporarily reduced symptoms (classic connection leak)"
+            ]
+        },
+        {
+            "type": "header",
+            "level": 3,
+            "text": "3. Root Cause Discovery: Zombie Connections"
+        },
+        {
+            "type": "paragraph",
+            "text": "The codebase was creating database connections manually without guaranteeing disposal. Under concurrent load, these connections stayed alive longer than expected, slowly exhausting the connection pool. The critical flaw was in the finally block, which was calling conn().Close() instead of closing the actual connection instance."
+        },
+        {
+            "type": "code",
+            "language": "csharp",
+            "caption": "Before: The Connection Leakage Pattern",
+            "code": "private SqlConnection conn()\n{\n    //Declaration\n    SqlConnection conSql = new SqlConnection();\n    string con = null;\n\n    //Connection String\n    con = stringConnection();\n\n    //Open Sql Connection\n    conSql = new SqlConnection(con);\n    conSql.Open();\n\n    return conSql;\n}\n\npublic DataTable selQry(string Qry)\n{\n    DataTable dt = new DataTable();\n    string selectQuery = null;\n    SqlConnection SqlCon = new SqlConnection();\n    try\n    {\n        SqlCon = conn();\n\n        //Query building\n        selectQuery = Qry;\n        SqlDataAdapter adptrSql = new SqlDataAdapter(selectQuery, SqlCon);\n        adptrSql.Fill(dt);\n        adptrSql.Dispose();\n    }\n    catch (Exception ex)\n    {\n        log.WriteErrorLog(\"clsConnection:selQry-Admin Exception:\" + ex.Message + \" Query:\" + Qry);\n    }\n    finally\n    {\n        // CRITICAL BUG: This creates a NEW connection and closes it\n        // The original SqlCon is never closed - it leaks!\n        conn().Close();\n    }\n\n    return dt;\n}"
+        },
+        {
+            "type": "paragraph",
+            "text": "This pattern had multiple critical flaws: connection lifetime was not scoped to the request, no using statement or explicit Dispose() guaranteed cleanup, and under high concurrency the pool exhausted completely. Most importantly, the finally block created a new connection instead of closing the existing one, leaving SqlCon as a zombie connection."
+        },
+        {
+            "type": "header",
+            "level": 3,
+            "text": "4. The Fix: Deterministic Resource Management"
+        },
+        {
+            "type": "paragraph",
+            "text": "I refactored the connection management to use the using pattern, which guarantees disposal even if exceptions occur. This ensures connections are returned to the pool immediately after use and eliminates the possibility of leakage."
+        },
+        {
+            "type": "code",
+            "language": "csharp",
+            "caption": "After: Guaranteed Connection Disposal",
+            "code": "public DataTable selQry(string query)\n{\n    DataTable dt = new DataTable();\n    \n    // using ensures Dispose() is called, even on exceptions\n    using (SqlConnection con = new SqlConnection(stringConnection()))\n    using (SqlCommand cmd = new SqlCommand(query, con))\n    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))\n    {\n        try\n        {\n            con.Open();\n            adapter.Fill(dt);\n        }\n        catch (Exception ex)\n        {\n            log.WriteErrorLog(\"Exception: \" + ex.Message + \" Query: \" + query);\n            throw; // Re-throw for upstream handling\n        }\n    } // All resources automatically disposed here\n    \n    return dt;\n}"
+        },
+        {
+            "type": "paragraph",
+            "text": "Why this works: connections are scoped to method lifetime, the pool is reused correctly, no zombie connections can exist, and the system remains safe under high concurrency."
+        },
+        {
+            "type": "header",
+            "level": 3,
+            "text": "5. Connection Pool Configuration Analysis"
+        },
+        {
+            "type": "paragraph",
+            "text": "I analyzed the connection string configuration to understand pool behavior and identify tuning opportunities. The default pool size was inadequate for 200+ concurrent users when connections were leaking."
+        },
+        {
+            "type": "code",
+            "language": "csharp",
+            "caption": "Before: Default Pool Settings (Inadequate)",
+            "code": "// Original connection string (implicit defaults)\nstring connectionString = \n    \"Data Source=SERVER;Initial Catalog=ERPDB;\" +\n    \"User ID=user;Password=pass;\";\n// Default: Min Pool Size = 0, Max Pool Size = 100\n// With leaks, 100 connections exhausted quickly"
+        },
+        {
+            "type": "code",
+            "language": "csharp",
+            "caption": "After: Optimized Pool Configuration",
+            "code": "// Optimized connection string with explicit pool management\nstring connectionString = \n    \"Data Source=SERVER;Initial Catalog=ERPDB;\" +\n    \"User ID=user;Password=pass;\" +\n    \"Min Pool Size=10;\" +          // Pre-warmed connections\n    \"Max Pool Size=150;\" +          // Increased for concurrent load\n    \"Connection Timeout=30;\" +     // Fail fast on exhaustion\n    \"Pooling=true;\";\n\n// Note: This alone wouldn't fix the leak, but optimizes behavior\n// once leaks were eliminated"
+        },
+        {
+            "type": "header",
+            "level": 3,
+            "text": "6. Secondary Issue: Manual Thread Spawning"
+        },
+        {
+            "type": "paragraph",
+            "text": "During the analysis, I discovered parts of the system were manually creating threads for background tasks instead of using the .NET ThreadPool. These threads were not lifecycle-managed, which multiplied resource consumption and database connection usage under load."
+        },
+        {
+            "type": "code",
+            "language": "csharp",
+            "caption": "Before: Unmanaged Thread Creation (High Risk)",
+            "code": "// Dangerous pattern found in employee processing\nnew Thread(() =>\n{\n    ProcessEmployeeData(empId);\n}).Start();\n\n// Problems:\n// - Threads are expensive (1MB+ stack each)\n// - No reuse mechanism\n// - No back-pressure or throttling\n// - Can overwhelm CPU and DB simultaneously\n// - Each thread likely opens its own DB connection"
+        },
+        {
+            "type": "code",
+            "language": "csharp",
+            "caption": "After: ThreadPool Integration",
+            "code": "// Use ThreadPool for background work\nawait Task.Run(() => ProcessEmployeeData(empId));\n\n// Or better: make the operation truly async\npublic async Task ProcessEmployeeAsync(int empId)\n{\n    using (SqlConnection con = new SqlConnection(stringConnection()))\n    {\n        await con.OpenAsync();\n        using (SqlCommand cmd = new SqlCommand(query, con))\n        {\n            await cmd.ExecuteNonQueryAsync();\n        }\n    }\n}\n\n// Result:\n// - ThreadPool manages thread lifecycle\n// - Reuses threads across operations\n// - Predictable scaling behavior\n// - Lower latency under concurrent load"
+        },
+        {
+            "type": "header",
+            "level": 3,
+            "text": "7. Critical Security Issue: SQL Injection"
+        },
+        {
+            "type": "paragraph",
+            "text": "While analyzing the codebase, I identified a critical SQL injection vulnerability. String concatenation was being used for query construction, which not only created a security risk but also caused a production bug where one user's session occasionally loaded another user's data due to special characters in email addresses breaking query syntax."
+        },
+        {
+            "type": "code",
+            "language": "csharp",
+            "caption": "Before: SQL Injection Vulnerability",
+            "code": "// CRITICAL SECURITY FLAW\nstring query = \"SELECT * FROM Users WHERE Email = '\" + email + \"'\";\nSqlCommand cmd = new SqlCommand(query, con);\n\n// Problems:\n// 1. SQL Injection: email = \"' OR '1'='1\" bypasses auth\n// 2. Broken query plans (no parameter reuse)\n// 3. Cache misses on every request\n// 4. Production bug: special chars in email broke queries\n// 5. Incorrect user data mapping observed in prod"
+        },
+        {
+            "type": "code",
+            "language": "csharp",
+            "caption": "After: Parameterized Queries (Secure)",
+            "code": "// Secure parameterized query\nusing (SqlConnection con = new SqlConnection(stringConnection()))\nusing (SqlCommand cmd = new SqlCommand(\n    \"SELECT * FROM Users WHERE Email = @Email\", con))\n{\n    cmd.Parameters.Add(\"@Email\", SqlDbType.VarChar, 100).Value = email;\n    con.Open();\n    \n    using (SqlDataReader reader = cmd.ExecuteReader())\n    {\n        // Process results safely\n    }\n}\n\n// Impact:\n// - Fixed login bug where one user loaded another's data\n// - Improved query plan reuse (better cache hit rate)\n// - Closed SQL injection vulnerability\n// - More predictable performance"
+        },
+        {
+            "type": "header",
+            "level": 3,
+            "text": "8. Connection Pool Monitoring Implementation"
+        },
+        {
+            "type": "paragraph",
+            "text": "To prevent future issues and validate fixes, I implemented connection pool telemetry using performance counters. This provided real-time visibility into pool health."
+        },
+        {
+            "type": "code",
+            "language": "csharp",
+            "caption": "Connection Pool Health Monitoring",
+            "code": "using System.Diagnostics;\n\npublic class ConnectionPoolMonitor\n{\n    private PerformanceCounter _pooledConnections;\n    private PerformanceCounter _activeConnections;\n    \n    public ConnectionPoolMonitor()\n    {\n        // Monitor .NET Data Provider for SqlServer\n        _pooledConnections = new PerformanceCounter(\n            \".NET Data Provider for SqlServer\",\n            \"NumberOfPooledConnections\",\n            \"ERPDB\"\n        );\n        \n        _activeConnections = new PerformanceCounter(\n            \".NET Data Provider for SqlServer\",\n            \"NumberOfActiveConnections\",\n            \"ERPDB\"\n        );\n    }\n    \n    public PoolHealth GetPoolHealth()\n    {\n        return new PoolHealth\n        {\n            TotalPooled = _pooledConnections.NextValue(),\n            Active = _activeConnections.NextValue(),\n            Timestamp = DateTime.UtcNow\n        };\n    }\n}\n\n// Before fix: Active connections climbed to 95-100% of max pool\n// After fix: Active connections stabilized at 15-20% during peak load"
+        },
+        {
+            "type": "header",
+            "level": 3,
+            "text": "9. Performance Validation: Load Testing"
+        },
+        {
+            "type": "paragraph",
+            "text": "I built a load testing harness to validate fixes before production deployment. The tests simulated concurrent user behavior and measured response times under increasing load. This proved the issue was systemic, not isolated to specific queries."
+        },
+        {
+            "type": "table",
+            "headers": ["Concurrent Users", "Before (ms)", "After (ms)", "Improvement"],
+            "rows": [
+                ["10", "~850", "~320", "62% faster"],
+                ["50", "~8,400", "~890", "89% faster"],
+                ["100", "~42,000", "~1,020", "98% faster"],
+                ["200", "~92,000", "~1,040", "99% faster"]
+            ]
+        },
+        {
+            "type": "paragraph",
+            "text": "The data clearly showed the bottleneck was connection lifecycle management combined with unsafe concurrency patterns, not data volume or individual slow queries."
+        },
+        {
+            "type": "header",
+            "level": 3,
+            "text": "10. Incremental Production Deployment Strategy"
+        },
+        {
+            "type": "paragraph",
+            "text": "The critical challenge was deploying fixes to a live production system without breaking ongoing operations. I implemented changes incrementally, testing each modification in isolation before rollout."
+        },
+        {
+            "type": "list",
+            "items": [
+                "Phase 1: Deployed connection disposal fixes to non-critical read-only operations",
+                "Phase 2: Monitored pool metrics for 48 hours to validate no regressions",
+                "Phase 3: Applied fixes to authentication and high-traffic write operations",
+                "Phase 4: Replaced manual threads with Task.Run in background processors",
+                "Phase 5: Converted all dynamic SQL to parameterized queries",
+                "Phase 6: Deployed pool monitoring and alerting dashboard",
+                "Zero downtime maintained throughout entire remediation process"
+            ]
+        },
+        {
+            "type": "header",
+            "level": 3,
+            "text": "11. Defensive Programming Patterns Applied"
+        },
+        {
+            "type": "paragraph",
+            "text": "Beyond fixing immediate issues, I implemented defensive patterns to prevent future resource leaks and improve code resilience."
+        },
+        {
+            "type": "code",
+            "language": "csharp",
+            "caption": "Defensive Connection Wrapper",
+            "code": "public class SafeDbHelper\n{\n    private readonly string _connectionString;\n    \n    public SafeDbHelper(string connectionString)\n    {\n        _connectionString = connectionString;\n    }\n    \n    // Ensures connection is always disposed, even if caller forgets\n    public T ExecuteScalar<T>(string query, \n        Action<SqlCommand> addParameters = null)\n    {\n        using (SqlConnection con = new SqlConnection(_connectionString))\n        using (SqlCommand cmd = new SqlCommand(query, con))\n        {\n            addParameters?.Invoke(cmd);\n            \n            con.Open();\n            object result = cmd.ExecuteScalar();\n            \n            return result == null || result == DBNull.Value \n                ? default(T) \n                : (T)Convert.ChangeType(result, typeof(T));\n        }\n    }\n    \n    // Usage:\n    int userId = dbHelper.ExecuteScalar<int>(\n        \"SELECT UserId FROM Users WHERE Email = @Email\",\n        cmd => cmd.Parameters.AddWithValue(\"@Email\", email)\n    );\n    // Connection guaranteed to be disposed\n}"
+        },
+        {
+            "type": "header",
+            "level": 3,
+            "text": "12. Key Learnings and Technical Insights"
+        },
+        {
+            "type": "list",
+            "items": [
+                "Zombie connections are silent killers: symptoms appear gradually, not immediately",
+                "Server restarts only mask resource leaks by clearing exhausted pools",
+                "The finally block anti-pattern (calling conn() instead of closing SqlCon) is surprisingly common in legacy code",
+                "Atomic operations matter: connection disposal must be guaranteed, not hoped for",
+                "Manual thread creation bypasses .NET's proven concurrency infrastructure",
+                "SQL injection isn't just a security issue—it causes production bugs with special characters",
+                "Connection pool telemetry is essential for diagnosing distributed state issues",
+                "Load testing proves systemic issues vs. isolated slow queries",
+                "Incremental deployment to production requires discipline but prevents catastrophic rollbacks"
+            ]
+        },
+        {
+            "type": "header",
+            "level": 3,
+            "text": "13. Production Deployment Results"
+        },
+        {
+            "type": "paragraph",
+            "text": "I successfully fixed the live ERP system without breaking production. All changes were deployed incrementally over 5 days with continuous monitoring. The system handled peak load without degradation, response times remained consistent throughout the day, and server restarts were no longer necessary. Connection pool utilization stabilized at 15-20% during peak hours versus the previous 95%+ saturation. Business operations continued uninterrupted during the entire remediation process."
+        },
+        {
+            "type": "header",
+            "level": 3,
+            "text": "14. Post-Deployment Metrics"
+        },
+        {
+            "type": "list",
+            "items": [
+                "Response time improvement: 92,000ms → 1,040ms (99% faster)",
+                "Connection pool saturation: 95%+ → 15-20% during peak load",
+                "Zero production downtime during entire fix deployment",
+                "Zero regressions or rollbacks required",
+                "Server restarts eliminated completely",
+                "System now handles 200+ concurrent users without degradation",
+                "Average query response time: 12ms (previously 4,600ms)",
+                "SQL injection vulnerability closed",
+                "User authentication bug resolved (incorrect data mapping)"
+            ]
+        },
+        {
+            "type": "header",
+            "level": 3,
+            "text": "15. Methodology: How I Approached the Problem"
+        },
+        {
+            "type": "list",
+            "items": [
+                "Did not trust surface symptoms or client assumptions",
+                "Traced execution paths end-to-end through critical flows",
+                "Reproduced issues locally with production-scale data and concurrency",
+                "Measured behavior under load to identify systemic patterns",
+                "Fixed root causes, not surface errors or workarounds",
+                "Ensured all changes were isolated, testable, and reversible",
+                "Deployed incrementally with continuous validation",
+                "Maintained production stability as the highest priority",
+                "Implemented monitoring to prevent future regressions"
+            ]
+        },
+        {
+            "type": "paragraph",
+            "text": "This engagement demonstrates that critical production issues can be resolved through methodical analysis, defensive programming, and disciplined deployment practices—all while keeping the business running."
+        }
+    ]
+}
 ];

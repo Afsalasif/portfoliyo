@@ -112,8 +112,8 @@ const Connect = () => {
   };
 
   return (
-    <div className="border-t border-neutral-900 bg-black relative min-h-[40rem] flex items-center justify-center" suppressHydrationWarning>
-      <div className="flex flex-col justify-center items-center px-4 max-w-7xl mx-auto w-full">
+    <div className="border-t border-neutral-900 bg-black relative min-h-[30rem] sm:min-h-[35rem] md:min-h-[40rem] flex items-center justify-center py-12 sm:py-16 md:py-20" suppressHydrationWarning>
+      <div className="flex flex-col justify-center items-center px-3 sm:px-4 md:px-6 max-w-7xl mx-auto w-full">
 
         <AnimatePresence mode="wait">
           {status === 'success' ? (
@@ -122,16 +122,16 @@ const Connect = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               key="success"
-              className="text-center w-full max-w-lg mx-auto"
+              className="text-center w-full max-w-lg mx-auto px-4"
             >
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-6 font-doto uppercase tracking-tight">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-4 sm:mb-6 font-doto uppercase tracking-tight">
                 Signal <span className="text-green-500">Transmitted</span>
               </h2>
-              <p className="text-neutral-400 font-mono text-sm leading-relaxed mb-8">
+              <p className="text-neutral-400 font-mono text-xs sm:text-sm leading-relaxed mb-6 sm:mb-8">
                 Transmission successful. Please wait for the system cooldown before sending further signals.
               </p>
 
-              <div className="font-mono text-xs text-neutral-500">
+              <div className="font-mono text-[10px] sm:text-xs text-neutral-500">
                 NEXT UPLINK AVAILABLE IN: <span className="text-white ml-2">{formatTime(ttl)}</span>
               </div>
             </motion.div>
@@ -143,18 +143,18 @@ const Connect = () => {
               key="form"
               className="w-full flex flex-col items-center"
             >
-              <h2 className="text-3xl md:text-6xl font-bold text-center text-white mb-6 font-doto uppercase tracking-tight">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-center text-white mb-4 sm:mb-6 font-doto uppercase tracking-tight px-4">
                 Ready to <span className="text-red-600">Collaborate?</span>
               </h2>
 
-              <p className='mb-12 text-neutral-400 font-mono text-sm tracking-wide text-center max-w-md leading-relaxed'>
+              <p className='mb-8 sm:mb-10 md:mb-12 text-neutral-400 font-mono text-xs sm:text-sm tracking-wide text-center max-w-md leading-relaxed px-4'>
                 Drop your email below to initiate the conversation. I'll get back to you with a secure line shortly.
               </p>
 
-              <div className="w-full max-w-xl relative">
+              <div className="w-full max-w-xl relative px-4">
                 {loading && (
                   <div className="absolute inset-0 z-10 bg-black/50 backdrop-blur-[1px] flex items-center justify-center">
-                    <div className="text-xs font-mono text-red-500 animate-pulse">TRANSMITTING...</div>
+                    <div className="text-[10px] sm:text-xs font-mono text-red-500 animate-pulse">TRANSMITTING...</div>
                   </div>
                 )}
                 <PlaceholdersAndVanishInput
@@ -164,11 +164,11 @@ const Connect = () => {
                 />
               </div>
 
-              <div className="mt-16 flex items-center gap-6 text-xs font-mono text-neutral-600">
+              <div className="mt-10 sm:mt-12 md:mt-16 flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-6 text-[10px] sm:text-xs font-mono text-neutral-600 px-4">
                 <a href="https://github.com" target="_blank" className="hover:text-white transition-colors">[ GITHUB ]</a>
-                <span>//</span>
+                <span className="hidden sm:inline">//</span>
                 <a href="https://linkedin.com" target="_blank" className="hover:text-white transition-colors">[ LINKEDIN ]</a>
-                <span>//</span>
+                <span className="hidden sm:inline">//</span>
                 <a href="mailto:contact@afsal.dev" className="hover:text-white transition-colors">[ MAIL ]</a>
               </div>
             </motion.div>

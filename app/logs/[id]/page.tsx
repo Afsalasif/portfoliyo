@@ -64,7 +64,10 @@ export default function LogDetail({ params }: { params: { id: string } }) {
                         switch (block.type) {
                             case 'header':
                                 return (
-                                    <h3 key={index} className={`font-doto font-bold text-white mb-4 mt-8 ${block.level === 2 ? 'text-2xl' : 'text-xl'}`}>
+                                    <h3 key={index} className={`font-doto font-bold text-white mb-4 mt-8 ${block.level === 2 ? 'text-2xl' :
+                                            block.level === 3 ? 'text-xl' :
+                                                'text-lg'
+                                        }`}>
                                         {block.text}
                                     </h3>
                                 );
@@ -99,6 +102,33 @@ export default function LogDetail({ params }: { params: { id: string } }) {
                                                 <code>{block.code}</code>
                                             </pre>
                                         </div>
+                                    </div>
+                                );
+                            case 'table':
+                                return (
+                                    <div key={index} className="my-6 overflow-x-auto">
+                                        <table className="w-full border-collapse border border-neutral-800 text-xs md:text-sm">
+                                            <thead>
+                                                <tr className="bg-neutral-900/50">
+                                                    {block.headers.map((header, i) => (
+                                                        <th key={i} className="border border-neutral-800 px-4 py-3 text-left text-white font-bold uppercase tracking-wider">
+                                                            {header}
+                                                        </th>
+                                                    ))}
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {block.rows.map((row, rowIndex) => (
+                                                    <tr key={rowIndex} className="hover:bg-neutral-900/30 transition-colors">
+                                                        {row.map((cell, cellIndex) => (
+                                                            <td key={cellIndex} className="border border-neutral-800 px-4 py-3 text-neutral-400">
+                                                                {cell}
+                                                            </td>
+                                                        ))}
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
                                     </div>
                                 );
                             default:
