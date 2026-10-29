@@ -221,7 +221,7 @@ export default function ReactTrailsSandbox() {
         setExecutionTime(Math.max(0.02, Number((end - start).toFixed(3))));
 
         try {
-          const schema = formatBreadcrumbsForSchema(formatted, "https://example.com");
+          const schema = formatBreadcrumbsForSchema(formatted);
           setJsonLdSchema(JSON.stringify(schema, null, 2));
         } catch {
           setJsonLdSchema("// Schema generation error");
