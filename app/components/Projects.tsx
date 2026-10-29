@@ -143,6 +143,11 @@ const Projects = () => {
                       </div>
 
                       <div className="space-y-2">
+                        {project.id === 1 && (
+                          <Link href={`/projects/${project.id}`} className="block w-full text-center py-1.5 sm:py-2 border border-red-900/60 bg-red-950/30 text-red-400 text-[10px] sm:text-xs font-mono hover:bg-red-600 hover:text-white transition-colors font-bold">
+                            ⚡ [ TRY_LIVE_SANDBOX ]
+                          </Link>
+                        )}
                         <Link href={`/projects/${project.id}`} className="block w-full text-center py-1.5 sm:py-2 border border-neutral-800 bg-neutral-800 text-neutral-300 text-[10px] sm:text-xs font-mono hover:bg-white hover:text-black transition-colors">
                           [ VIEW_BLUEPRINT ]
                         </Link>

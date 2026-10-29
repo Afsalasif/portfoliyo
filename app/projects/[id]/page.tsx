@@ -2,6 +2,7 @@ import React from "react";
 import { projectsData } from "../../data/projects";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import ReactTrailsSandbox from "../../components/ReactTrailsSandbox";
 
 export function generateStaticParams() {
     return projectsData.map((project) => ({
@@ -109,6 +110,13 @@ export default async function ProjectDetail({ params }: { params: Promise<{ id: 
                                 </li>
                             ))}
                         </ul>
+                    </div>
+                )}
+
+                {/* Live Sandbox Component for React Trails */}
+                {project.id === 1 && (
+                    <div className="my-12">
+                        <ReactTrailsSandbox />
                     </div>
                 )}
 
